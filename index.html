@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Clean website with modern design elements">
+  <title>Modern UI Design System</title>
+  <!-- Add Google Fonts (JetBrains Mono) -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet links -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/effects.css">
+  <link rel="stylesheet" href="styles/translucent.css">
+  <!-- Add icons library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Add favicon -->
+  <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+  <!-- Add preconnect for external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="logo" href="/public/logo.png">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+  
+  <!-- Commenting out VisActor libraries -->
+  <!-- <script src="https://unpkg.com/@visactor/vchart/build/index.min.js"></script> -->
+  <!-- <script src="https://unpkg.com/@visactor/vgrammar/build/index.min.js"></script> -->
+  <!-- <script src="https://unpkg.com/@visactor/vtable/build/index.min.js"></script> -->
+  
+  <style>
+    /* Critical CSS for initial page rendering */
+    :root {
+      --accent-color: #74C365;
+      --secondary-accent: #E23D28;
+      --contrast-color: #F4C431;
+      --background: #ffffff;
+      --text: #333;
+      --border-radius-lg: 12px;
+      --spacing-xl: 64px;
+      --spacing-lg: 32px;
+      --spacing-md: 16px;
+      --spacing-sm: 8px;
+      
+      /* Set all blue-500 references to use our green accent color */
+      --blue-500: #74C365;
+    }
+    
+    /* Responsive spacing adjustments */
+    @media (max-width: 768px) {
+      :root {
+        --spacing-xl: 40px;
+        --spacing-lg: 24px;
+        --spacing-md: 12px;
+        --spacing-sm: 6px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      :root {
+        --spacing-xl: 32px;
+        --spacing-lg: 20px;
+        --spacing-md: 10px;
+        --spacing-sm: 5px;
+      }
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background-color: var(--background);
+      color: var(--text);
+      display: none; /* Hide until fully loaded */
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    
+    /* Typography responsive scaling */
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.25rem; }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 2.2rem; }
+      h2 { font-size: 1.8rem; }
+      h3 { font-size: 1.3rem; }
+      h4 { font-size: 1.1rem; }
+      body { font-size: 15px; }
+    }
+    
+    @media (max-width: 480px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      h3 { font-size: 1.2rem; }
+      h4 { font-size: 1rem; }
+      body { font-size: 14px; }
+    }
+    
+    /* Responsive container */
+    .container {
+      padding: 0 var(--spacing-lg);
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* Responsive grid system */
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+    
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 0 15px;
+      box-sizing: border-box;
+    }
+    
+    @media (max-width: 768px) {
+      .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+    
+    /* General responsive utilities */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Improved responsive navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--background);
+      transition: all 0.3s ease;
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-collapse {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--background);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      }
+      
+      .navbar-collapse.open {
+        max-height: 500px;
+      }
+      
+      .navbar-nav {
+        flex-direction: column;
+        padding: 0;
+      }
+      
+      .navbar-actions {
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-md);
+      }
+      
+      .navbar-toggle {
+        display: block;
+      }
+      
+      .search-container {
+        width: 100%;
+        margin: var(--spacing-sm) 0;
+      }
+    }
+    
+    /* Responsive pricing grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+    }
+    
+    @media (max-width: 1200px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Responsive cards and panels */
+    .glass-panel, .translucent-card {
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    @media (max-width: 768px) {
+      .glass-panel, .translucent-card {
+        padding: var(--spacing-md);
+      }
+    }
+    
+    /* Other responsive improvements */
+    .text-lead {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+      .text-lead {
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .text-lead {
+        font-size: 1rem;
+      }
+    }
+    
+    /* Responsive form elements */
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    body.loaded {
+      display: block;
+    }
+    
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .page-loader.loaded {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loader-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .section {
+      margin: var(--spacing-xl) 0;
+      padding: var(--spacing-xl) 0;
+    }
+    
+    .bordered-section {
+      border-top: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    
+    .pricing-features {
+      margin: var(--spacing-lg) 0;
+    }
+    
+    .pricing-features li {
+      margin-bottom: var(--spacing-md);
+      padding-left: var(--spacing-sm);
+    }
+    
+    h1, h2, h3, h4 {
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+      line-height: 1.3;
+    }
+    
+    p {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    button {
+      margin: var(--spacing-sm) 0;
+    }
+  </style>
+  
+  <script>
+    // Add this to prevent FOUC (Flash of Unstyled Content)
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.classList.add('loaded');
+    });
+  </script>
+</head>
+<body>
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-spinner"></div>
+  </div>
+  <div class="wrapper">
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="navbar-brand">
+          <a href="#" aria-label="Home">
+            <div class="small-image logo">
+             <img src="/public/logo.png" style="max-width: 50%; height: auto;">
+            </div>
+          </a>
+        </div>
+
+        <button class="navbar-toggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="toggle-line"></span>
+          <span class="toggle-line"></span>
+          <span class="toggle-line"></span>
+        </button>
+
+        <div class="navbar-collapse">
+          <ul class="navbar-nav" role="menubar">
+            <li role="none" class="nav-item">
+              <a href="#" role="menuitem" class="nav-link active">
+                <span class="nav-text">Home</span>
+                <span class="nav-indicator"></span>
+              </a>
+            </li>
+            <li role="none" class="nav-item">
+              <a href="#features-section" role="menuitem" class="nav-link">
+                <span class="nav-text">Features</span>
+                <span class="nav-indicator"></span>
+              </a>
+            </li>
+            <li role="none" class="nav-item">
+              <a href="#pricing-section" role="menuitem" class="nav-link">
+                <span class="nav-text">Pricing</span>
+                <span class="nav-indicator"></span>
+              </a>
+            </li>
+            <li role="none" class="nav-item">
+              <a href="#dashboard-section" role="menuitem" class="nav-link">
+                <span class="nav-text">Dashboard</span>
+                <span class="nav-indicator"></span>
+              </a>
+            </li>
+            <li role="none" class="nav-item">
+              <a href="#contact-section" role="menuitem" class="nav-link">
+                <span class="nav-text">Contact</span>
+                <span class="nav-indicator"></span>
+              </a>
+            </li>
+          </ul>
+          
+          <div class="navbar-actions">
+            <div class="search-container">
+              <input type="search" class="search-input" placeholder="Search..." aria-label="Search">
+              <button class="search-btn" aria-label="Submit search">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            
+            <div class="theme-toggle">
+              <input type="checkbox" id="darkModeToggle" class="toggle-input" aria-label="Toggle dark mode">
+              <label for="darkModeToggle" class="toggle-label" id="darkModeLabel">
+                <i class="fas fa-sun" aria-hidden="true"></i>
+                <i class="fas fa-moon" aria-hidden="true"></i>
+                <span class="toggle-ball"></span>
+              </label>
+            </div>
+            
+            <button class="button button-primary button-sm">Get Started</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <main>
+      <section class="hero bg-light py-xl">
+        <div class="container">
+          <div class="glass-panel animate-fadeInUp">
+            <span class="glass-badge glass-badge-accent mb-md">BiteBase Design System</span>
+            <h1 class="mb-sm">Enterprise-Grade UI Framework</h1>
+            <p class="text-lead mb-lg">A comprehensive design system featuring translucent effects, interactive visualizations, and accessible components for modern web applications.</p>
+            <div class="mt-lg">
+              <button class="button button-lg" aria-label="View documentation">
+                <i class="fas fa-book"></i>
+                Documentation
+              </button>
+              <button class="button button-secondary button-lg" style="margin-left: 12px;">
+                <i class="fas fa-code"></i>
+                Component Library
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-nav container">
+        <ul>
+          <li><a href="#overview-section" class="active"><i class="fas fa-info-circle"></i> Overview</a></li>
+          <li><a href="#features-section"><i class="fas fa-star"></i> Features</a></li>
+          <li><a href="#pricing-section"><i class="fas fa-tags"></i> Pricing</a></li>
+          <li><a href="#map-section"><i class="fas fa-map-marked-alt"></i> Maps</a></li>
+          <li><a href="#dashboard-section"><i class="fas fa-chart-bar"></i> Dashboards</a></li>
+          <li><a href="#contact-section"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+      </div>
+
+      <section class="section bordered-section" id="overview-section" aria-labelledby="overview-heading">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-primary mb-sm">Design System</span>
+            <h2 id="overview-heading">System Overview</h2>
+            <p class="text-lead mx-auto" style="max-width: 700px;">BiteBase provides a cohesive set of UI components and visualization tools to create beautiful, accessible, and performant web applications.</p>
+          </div>
+          
+          <div class="overview-grid">
+            <div class="overview-card translucent-card">
+              <div class="overview-icon"><i class="fas fa-palette"></i></div>
+              <h3>Design Principles</h3>
+              <ul class="overview-list">
+                <li>Visual harmony through consistent spacing and typography</li>
+                <li>Accessible interfaces with WCAG 2.1 AA compliance</li>
+                <li>Responsive layouts that work across all devices</li>
+                <li>Subtle animations that enhance user experience</li>
+              </ul>
+            </div>
+            
+            <div class="overview-card translucent-card">
+              <div class="overview-icon"><i class="fas fa-cubes"></i></div>
+              <h3>Component Library</h3>
+              <ul class="overview-list">
+                <li>50+ UI components for common interface patterns</li>
+                <li>Built with accessibility and performance in mind</li>
+                <li>Extensively tested across browsers and devices</li>
+                <li>Detailed documentation with usage examples</li>
+              </ul>
+            </div>
+            
+            <div class="overview-card translucent-card">
+              <div class="overview-icon"><i class="fas fa-chart-pie"></i></div>
+              <h3>Data Visualization</h3>
+              <ul class="overview-list">
+                <li>Integrated with VisActor for powerful visualizations</li>
+                <li>Interactive maps with custom markers</li>
+                <li>Accessible charts with proper ARIA attributes</li>
+                <li>Responsive dashboards for data-driven insights</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bordered-section" id="features-section">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-primary mb-sm">Benefits</span>
+            <h2>Why Choose BiteBase</h2>
+            <p class="text-lead mx-auto" style="max-width: 600px;">Discover how our design system helps you create beautiful, accessible web applications faster.</p>
+          </div>
+          
+          <div class="glass-panel">
+            <div class="row">
+              <div class="col-md-6">
+                <h3 class="mb-md">Technical Benefits</h3>
+                <ul class="benefit-list">
+                  <li>
+                    <i class="fas fa-tachometer-alt"></i>
+                    <div>
+                      <h4>Improved Performance</h4>
+                      <p>Optimized components ensure faster load times and smoother interactions, leading to better user experience.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-tools"></i>
+                    <div>
+                      <h4>Development Efficiency</h4>
+                      <p>Reusable components and standardized patterns reduce development time by up to 40%.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-universal-access"></i>
+                    <div>
+                      <h4>Accessibility Compliance</h4>
+                      <p>Built-in WCAG 2.1 AA compliance reduces legal risks and expands market reach.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                      <h4>Device Compatibility</h4>
+                      <p>Responsive design ensures consistent experience across desktop, tablet, and mobile devices.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h3 class="mb-md">Business Value</h3>
+                <ul class="benefit-list">
+                  <li>
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                      <h4>Enhanced User Engagement</h4>
+                      <p>Professional, interactive interfaces increase user satisfaction and conversion rates.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-dollar-sign"></i>
+                    <div>
+                      <h4>Cost Reduction</h4>
+                      <p>Standardized design reduces maintenance costs and training time for new developers.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-rocket"></i>
+                    <div>
+                      <h4>Faster Time to Market</h4>
+                      <p>Pre-built components accelerate product development cycles by up to 60%.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <i class="fas fa-handshake"></i>
+                    <div>
+                      <h4>Brand Consistency</h4>
+                      <p>Unified design language strengthens brand identity and customer trust.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bordered-section" id="pricing-section">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-outline badge-accent mb-sm">Pricing Plans</span>
+            <h2>Choose Your Plan</h2>
+            <p class="text-lead mx-auto" style="max-width: 600px; ">Select a plan that fits your needs and start building with BiteBase today!</p>
+          </div>
+          
+          <div class="flex justify-center mb-8">
+            <button 
+              class="toggle-btn active" 
+              data-billing="monthly"
+            >
+              Monthly
+            </button>
+            <button 
+              class="toggle-btn"
+              data-billing="yearly"
+            >
+              Yearly
+              <span class="pricing-save">Save 20%</span>
+            </button>
+          </div>
+          
+          <div class="pricing-grid" style="padding: var(--spacing-md) 0; margin-top: var(--spacing-sm);">
+            <!-- Free Plan -->
+            <div class="pricing-card translucent-card" style="padding: var(--spacing-md); margin: var(--spacing-sm);">
+              <div class="pricing-header">
+                <img 
+                  src="/public/branding/subscription/free.png" 
+                  alt="Free plan icon" 
+                  class="plan-image small-image plan-img"
+                  loading="lazy"
+                  style="max-width: 50%; height: auto;"
+                />
+                <h2 class="price">Free</h2>
+                <div class="pricing-description">Basic analytics and insights for small businesses just getting started</div>
+              </div>
+              
+              <p class="price">US$0 <span class="price-period">per month</span></p>
+              
+              <ul class="pricing-features">
+                <li><i class="fas fa-check-circle"></i> Sales overview, peak hours</li>
+                <li><i class="fas fa-check-circle"></i> Limited trade area view</li>
+                <li><i class="fas fa-check-circle"></i> Monitor & receive alerts</li>
+                <li><i class="fas fa-times-circle text-muted"></i> Advanced analytics</li>
+                <li><i class="fas fa-times-circle text-muted"></i> Competitor tracking</li>
+                <li><i class="fas fa-times-circle text-muted"></i> AI insights & recommendations</li>
+              </ul>
+              
+              <button class="button button-lg">Get Started</button>
+            </div>
+            
+            <!-- Growth Plan -->
+            <div class="pricing-card translucent-card" style="padding: var(--spacing-md); margin: var(--spacing-sm); color: var(--blue-500)">
+              <div class="pricing-header">
+                <img 
+                  src="/public/branding/subscription/growth.png" 
+                  alt="Growth plan icon" 
+                  class="plan-image small-image plan-img"
+                  loading="lazy"
+                  style="max-width: 50%; height: auto;"
+                />
+                <h2 class="price">Growth</h2>
+                <div class="pricing-description">For independent restaurants looking to optimize operations</div>
+              </div>
+              
+              <p class="price">US$14.99 <span class="price-period">per month</span></p>
+              
+              <ul class="pricing-features">
+                <li><i class="fas fa-check-circle"></i> Analytics Overview Dashboard</li>
+                <li><i class="fas fa-check-circle"></i> Local Market Snapshot (Limited)</li>
+                <li><i class="fas fa-check-circle"></i> Review Monitoring (Google & Yelp)</li>
+                <li><i class="fas fa-check-circle"></i> Track up to 5 competitors</li>
+                <li><i class="fas fa-check-circle"></i> Monthly AI business reports</li>
+                <li><i class="fas fa-check-circle"></i> 3-month data history</li>
+              </ul>
+              
+              <button class="button button-lg">Subscribe Now</button>
+            </div>
+            
+            <!-- Pro Plan -->
+            <div class="pricing-card translucent-card popular" style="position: relative; transform: scale(1.05); border: 2px solid var(--accent-color); z-index: 10; box-shadow: 0 8px 24px rgba(0,0,0,0.15); padding: var(--spacing-md); margin: var(--spacing-sm);">
+              <div class="popular-tag" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--accent-color); color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">Most Popular</div>
+              <div class="pricing-header">
+                <img 
+                  src="/public/branding/subscription/pro.png" 
+                  alt="Pro plan icon" 
+                  class="plan-image small-image plan-img"
+                  loading="lazy"
+                  style="max-width: 50%; height: auto;"
+                />
+                <h2 class="price">Pro</h2>
+                <div class="pricing-description">Ideal for restaurants expanding to multiple locations</div>
+              </div>
+              
+              <p class="price" style="font-size: 1.2em; font-weight: bold;">US$109 <span class="price-period">per month</span></p>
+              
+              <ul class="pricing-features">
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Advanced Analytics Dashboard</li>
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Extended Market Analysis</li>
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Full Review Suite Integration</li>
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Track up to 15 competitors</li>
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> Weekly AI strategy recommendations</li>
+                <li><i class="fas fa-check-circle" style="color: var(--accent-color);"></i> 1-year data history retention</li>
+              </ul>
+              
+              <button class="button button-lg" style="background: var(--accent-color); color: white; font-weight: bold; padding: 12px 24px; transform: scale(1.05); box-shadow: 0 4px 12px rgba(116, 195, 101, 0.4); transition: all 0.3s ease;">Choose Pro</button>
+            </div>
+            
+            <!-- Enterprise Plan -->
+            <div class="pricing-card translucent-card" style="padding: var(--spacing-md); margin: var(--spacing-sm);">
+              <div class="pricing-header">
+                <img 
+                  src="/public/branding/subscription/enterprise.png" 
+                  alt="Enterprise plan icon" 
+                  class="plan-image small-image plan-img"
+                  loading="lazy"
+                  style="max-width: 50%; height: auto;"
+                />
+                <h2 class="price">Enterprise</h2>
+                <div class="pricing-description">For chains, franchises, and restaurant groups</div>
+              </div>
+              
+              <p class="price">US$599 <span class="price-period">per month</span></p>
+              
+              <ul class="pricing-features">
+                <li><i class="fas fa-check-circle"></i> Enterprise Analytics Dashboard</li>
+                <li><i class="fas fa-check-circle"></i> AI-powered Sales Forecasting</li>
+                <li><i class="fas fa-check-circle"></i> Custom Market Research Reports</li>
+                <li><i class="fas fa-check-circle"></i> Track up to 50 competitors</li>
+                <li><i class="fas fa-check-circle"></i> API Access & Business Intelligence</li>
+                <li><i class="fas fa-check-circle"></i> Unlimited historical data</li>
+              </ul>
+              
+              <button class="button button-lg">Contact Sales</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bordered-section map-section" id="map-section">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-primary mb-sm">Geospatial</span>
+            <h2 id="map-heading">Interactive Map Visualization</h2>
+            <p class="text-lead mx-auto" style="max-width: 600px;">Explore location data with our accessible, interactive map components.</p>
+          </div>
+          
+          <div class="translucent-card map-container-wrapper">
+            <div class="map-header">
+              <h3>Bangkok Tourist Attractions</h3>
+              <p>Explore popular destinations and transport options in Bangkok, Thailand.</p>
+              
+              <div class="map-controls">
+                <div class="map-layers">
+                  <button class="button button-sm active" data-layer="all">All</button>
+                  <button class="button button-sm button-outline" data-layer="attractions">Attractions</button>
+                  <button class="button button-sm button-outline" data-layer="food">Food</button>
+                  <button class="button button-sm button-outline" data-layer="transport">Transport</button>
+                </div>
+                
+                <div class="map-search">
+                  <div class="input-with-icon">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="mapSearch" class="form-input" placeholder="Search locations..." aria-label="Search map locations">
+                    <button type="button" class="input-icon-right clear-search" aria-label="Clear search">
+                      <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Map container -->
+            <div id="map" class="map-container" aria-label="Interactive map of Bangkok, Thailand">
+              <div class="map-loading" id="mapLoading">
+                <div class="loader-spinner"></div>
+                <p>Loading map...</p>
+              </div>
+            </div>
+            
+            <div class="map-info-panel">
+              <div class="map-info-content">
+                <h4>Location Information</h4>
+                <p id="selectedLocation">Select a marker on the map to see details</p>
+                <div id="locationDetails" class="location-details"></div>
+              </div>
+            </div>
+            
+            <div class="map-legend">
+              <div class="legend-item">
+                <span class="marker-icon attraction-marker">
+                  <i class="fas fa-monument"></i>
+                </span>
+                <span>Attractions</span>
+              </div>
+              <div class="legend-item">
+                <span class="marker-icon food-marker">
+                  <i class="fas fa-utensils"></i>
+                </span>
+                <span>Food & Markets</span>
+              </div>
+              <div class="legend-item">
+                <span class="marker-icon transport-marker">
+                  <i class="fas fa-subway"></i>
+                </span>
+                <span>Transport</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="map-cards mt-xl">
+            <div class="grid-3">
+              <div class="card translucent-card">
+                <div class="card-content">
+                  <div class="card-icon">
+                    <i class="fas fa-route"></i>
+                  </div>
+                  <h3>Route Planning</h3>
+                  <p>Plan efficient routes between destinations with real-time traffic updates and public transit options.</p>
+                  <div class="card-footer">
+                    <a href="#">Plan a route <i class="fas fa-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card translucent-card">
+                <div class="card-content">
+                  <div class="card-icon">
+                    <i class="fas fa-bookmark"></i>
+                  </div>
+                  <h3>Save Favorites</h3>
+                  <p>Bookmark your favorite locations for quick access and share them with friends and family.</p>
+                  <div class="card-footer">
+                    <a href="#">View saved places <i class="fas fa-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card translucent-card">
+                <div class="card-content">
+                  <div class="card-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                  </div>
+                  <h3>Custom Maps</h3>
+                  <p>Create personalized maps with custom markers, routes, and sharing options for your travel plans.</p>
+                  <div class="card-footer">
+                    <a href="#">Create a map <i class="fas fa-arrow-right"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bordered-section" id="dashboard-section">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-primary mb-sm">Analytics</span>
+            <h2 id="dashboard-heading">Interactive Dashboards</h2>
+            <p class="text-lead mx-auto" style="max-width: 600px;">Enterprise-grade data visualization components powered by VisActor for real-time analytics.</p>
+          </div>
+          
+          <div class="dashboard-grid">
+            <!-- VisActor Chart 1: Line Chart with Area -->
+            <div class="card translucent-card">
+              <div class="card-content">
+                <h3>Tourism Trends</h3>
+                <p class="mb-md">Monthly visitor statistics for Bangkok attractions.</p>
+                <div id="visitorChart" class="vis-chart-container" aria-label="Line chart showing tourism trends"></div>
+              </div>
+            </div>
+            
+            <!-- VisActor Chart 2: Stacked Bar Chart -->
+            <div class="card translucent-card">
+              <div class="card-content">
+                <h3>Revenue by Category</h3>
+                <p class="mb-md">Breakdown of tourism revenue across different categories.</p>
+                <div id="revenueChart" class="vis-chart-container" aria-label="Bar chart showing revenue by category"></div>
+              </div>
+            </div>
+            
+            <!-- VisActor Chart 3: Radar Chart -->
+            <div class="card translucent-card">
+              <div class="card-content">
+                <h3>Visitor Demographics</h3>
+                <p class="mb-md">Visitor profile analysis across different dimensions.</p>
+                <div id="demographicsChart" class="vis-chart-container" aria-label="Radar chart showing visitor demographics"></div>
+              </div>
+            </div>
+            
+            <!-- VisActor Table Component -->
+            <div class="card translucent-card full-width">
+              <div class="card-content">
+                <h3>Top Bangkok Attractions</h3>
+                <p class="mb-md">Ranking of attractions by visitor count and popularity metrics.</p>
+                <div id="attractionsTable" class="vis-table-container" aria-label="Table showing top Bangkok attractions"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact-section bordered-section" id="contact-section">
+        <div class="container">
+          <div class="text-center mb-xl">
+            <span class="badge badge-outline badge-accent mb-sm">Contact Us</span>
+            <h2>Get in Touch</h2>
+            <p class="text-lead mx-auto" style="max-width: 600px;">Have questions about our design system? We'd love to hear from you.</p>
+          </div>
+          
+          <div class="glass-panel">
+            <form id="contactForm" novalidate>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                <div class="form-group">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" id="name" class="form-input" placeholder="Your name" required aria-required="true">
+                </div>
+                <div class="form-group">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" id="email" class="form-input" placeholder="your.email@example.com" required aria-required="true">
+                </div>
+              </div>
+              
+              <div class="form-group mt-md">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" class="form-input" rows="5" placeholder="How can we help you?"></textarea>
+              </div>
+              
+              <div class="mt-lg">
+                <button type="submit" class="button" id="submitButton">Send Message</button>
+                <span id="formStatus" class="form-status" aria-live="polite"></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="bg-light py-xl" style="margin-top: var(--spacing-xl);">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <h3 class="mb-md">BiteBase</h3>
+            <p>A professional design system for modern web applications with clean aesthetics and exceptional performance.</p>
+            <div class="mt-md" style="display: flex; gap: 16px;">
+              <a href="#" class="button button-icon button-outline" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="button button-icon button-outline" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="#" class="button button-icon button-outline" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="mb-md">Quick Links</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li class="mb-sm"><a href="#">Documentation</a></li>
+              <li class="mb-sm"><a href="#">Components</a></li>
+              <li class="mb-sm"><a href="#">Examples</a></li>
+              <li class="mb-sm"><a href="#">Support</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-md">Resources</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li class="mb-sm"><a href="#">Style Guide</a></li>
+              <li class="mb-sm"><a href="#">Design Tokens</a></li>
+              <li class="mb-sm"><a href="#">UI Kit</a></li>
+              <li class="mb-sm"><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="mb-md">Newsletter</h4>
+            <p>Stay updated with our latest features and releases.</p>
+            <div class="input-group mt-md">
+              <input type="email" class="form-input" placeholder="Enter your email">
+              <div class="input-group-append">
+                <button class="button">Subscribe</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: var(--spacing-xl); text-align: center; color: var(--secondary-text);">
+          <p class="mb-0">&copy; 2023 BiteBase Design System. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+    
+    <button class="floating-action" aria-label="Back to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+  
+  <!-- Add before footer -->
+  <section class="section bordered-section" id="management-section">
+    <div class="container">
+      <div class="text-center mb-xl">
+        <span class="badge badge-outline badge-accent mb-sm">For Leadership</span>
+        <h2>Executive Summary</h2>
+        <p class="text-lead mx-auto" style="max-width: 600px;">Key benefits and business value of implementing the BiteBase Design System.</p>
+      </div>
+      
+      <div class="glass-panel">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="mb-md">Technical Benefits</h3>
+            <ul class="benefit-list">
+              <li>
+                <i class="fas fa-tachometer-alt"></i>
+                <div>
+                  <h4>Improved Performance</h4>
+                  <p>Optimized components ensure faster load times and smoother interactions, leading to better user experience.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-tools"></i>
+                <div>
+                  <h4>Development Efficiency</h4>
+                  <p>Reusable components and standardized patterns reduce development time by up to 40%.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-universal-access"></i>
+                <div>
+                  <h4>Accessibility Compliance</h4>
+                  <p>Built-in WCAG 2.1 AA compliance reduces legal risks and expands market reach.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-mobile-alt"></i>
+                <div>
+                  <h4>Device Compatibility</h4>
+                  <p>Responsive design ensures consistent experience across desktop, tablet, and mobile devices.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h3 class="mb-md">Business Value</h3>
+            <ul class="benefit-list">
+              <li>
+                <i class="fas fa-chart-line"></i>
+                <div>
+                  <h4>Enhanced User Engagement</h4>
+                  <p>Professional, interactive interfaces increase user satisfaction and conversion rates.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-dollar-sign"></i>
+                <div>
+                  <h4>Cost Reduction</h4>
+                  <p>Standardized design reduces maintenance costs and training time for new developers.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-rocket"></i>
+                <div>
+                  <h4>Faster Time to Market</h4>
+                  <p>Pre-built components accelerate product development cycles by up to 60%.</p>
+                </div>
+              </li>
+              <li>
+                <i class="fas fa-handshake"></i>
+                <div>
+                  <h4>Brand Consistency</h4>
+                  <p>Unified design language strengthens brand identity and customer trust.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="row mt-xl">
+          <div class="col-12">
+            <h3 class="mb-md">Implementation Timeline</h3>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <h4>Phase 1: Initial Integration</h4>
+                  <p>2 weeks - Core components and styling system</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <h4>Phase 2: Dashboard Implementation</h4>
+                  <p>3 weeks - VisActor charts and data visualization</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <h4>Phase 3: Map & Geospatial Features</h4>
+                  <p>2 weeks - Interactive maps with custom markers</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <h4>Phase 4: Accessibility & Performance Optimization</h4>
+                  <p>2 weeks - Final testing and refinement</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                  <h4>Deployment</h4>
+                  <p>1 week - Production rollout and monitoring</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Add JavaScript for interactive elements -->
+  <script>
+    // Declare map variable globally so it can be accessed by other functions
+    let mapInstance;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM fully loaded');
+      
+      // Remove page loader
+      const pageLoader = document.getElementById('pageLoader');
+      if (pageLoader) {
+        pageLoader.classList.add('loaded');
+        setTimeout(() => {
+          if (pageLoader.parentNode) {
+            pageLoader.parentNode.removeChild(pageLoader);
+          }
+        }, 500);
+      }
+      
+      // Add scroll class to navbar for enhanced sticky header effect
+      const navbar = document.querySelector('.navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 10) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+      
+      // Show/hide back to top button
+      const backToTopBtn = document.querySelector('.floating-action');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 500) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      });
+      
+      // Add animation classes to elements as they enter viewport
+      const animateElements = document.querySelectorAll('.card, .overview-card, .pricing-card');
+      
+      const animateOnScroll = function() {
+        animateElements.forEach((element, index) => {
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+          
+          if (elementTop < window.innerHeight - elementVisible) {
+            element.classList.add('animate-fadeInUp');
+            element.classList.add(`delay-${(index % 5 + 1) * 100}`);
+          }
+        });
+      };
+      
+      window.addEventListener('scroll', animateOnScroll);
+      animateOnScroll(); // Run once on page load
+      
+      // Enhanced map initialization
+      const mapContainer = document.getElementById('map');
+      if (typeof mapboxgl !== 'undefined' && mapContainer) {
+        try {
+          // Force container to be visible and properly sized
+          mapContainer.style.display = 'block';
+          mapContainer.style.height = '500px';
+          
+          mapboxgl.accessToken = 'pk.eyJ1Ijoia2hpd25pdGkiLCJhIjoiY203cm1oaWtyMWI4ejJpcHVuN2U2bHB6MiJ9.w9KWAvFEvF7bCdX-8Povkg';
+          
+          // Assign to global variable
+          mapInstance = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10', // Use a lighter style for better contrast with markers
+            center: [100.5018, 13.7563], // Bangkok coordinates
+            zoom: 12,
+            pitch: 30, // Add some tilt for 3D effect
+            bearing: -10, // Slight rotation
+            attributionControl: false
+          });
+          
+          // Add controls
+          mapInstance.addControl(new mapboxgl.NavigationControl({
+            showCompass: true,
+            visualizePitch: true
+          }), 'top-right');
+          
+          // Define location data
+          const locations = [
+            {
+              name: "Grand Palace",
+              category: "attractions",
+              coordinates: [100.4915, 13.7500]
+            },
+            {
+              name: "Wat Arun",
+              category: "attractions",
+              coordinates: [100.4868, 13.7437]
+            },
+            {
+              name: "Chatuchak Market",
+              category: "food",
+              coordinates: [100.5502, 13.7999]
+            },
+            {
+              name: "Chinatown",
+              category: "food",
+              coordinates: [100.5102, 13.7394]
+            },
+            {
+              name: "Suvarnabhumi Airport",
+              category: "transport",
+              coordinates: [100.7501, 13.6900]
+            },
+            {
+              name: "Hua Lamphong Station",
+              category: "transport",
+              coordinates: [100.5175, 13.7373]
+            }
+          ];
+          
+          // Add markers when map loads
+          mapInstance.on('load', function() {
+            console.log('Map loaded successfully');
+            
+            // Hide loading indicator
+            const mapLoading = document.getElementById('mapLoading');
+            if (mapLoading) mapLoading.style.display = 'none';
+            
+            try {
+              // Add 3D buildings for enhanced visual effect
+              mapInstance.addLayer({
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 14,
+                'paint': {
+                  'fill-extrusion-color': '#aaa',
+                  'fill-extrusion-height': [
+                    'interpolate', ['linear'], ['zoom'],
+                    14, 0,
+                    16, ['get', 'height']
+                  ],
+                  'fill-extrusion-base': [
+                    'interpolate', ['linear'], ['zoom'],
+                    14, 0,
+                    16, ['get', 'min_height']
+                  ],
+                  'fill-extrusion-opacity': 0.6
+                }
+              });
+            } catch (err) {
+              console.warn('Unable to add 3D buildings:', err);
+            }
+            
+            // Add markers
+            locations.forEach(location => {
+              // Create custom marker element
+              const markerEl = document.createElement('div');
+              markerEl.className = `custom-marker ${location.category}-marker`;
+              
+              // Add icon based on category
+              let iconClass = 'fa-map-marker-alt';
+              if (location.category === 'attractions') iconClass = 'fa-monument';
+              if (location.category === 'food') iconClass = 'fa-utensils';
+              if (location.category === 'transport') iconClass = 'fa-subway';
+              
+              markerEl.innerHTML = `<i class="fas ${iconClass}"></i>`;
+              
+              // Create marker
+              const marker = new mapboxgl.Marker(markerEl)
+                .setLngLat(location.coordinates)
+                .setPopup(new mapboxgl.Popup({offset: 25})
+                  .setHTML(`<h4>${location.name}</h4><p>${location.category}</p>`))
+                .addTo(mapInstance);
+              
+              // Add click handler
+              markerEl.addEventListener('click', function() {
+                const selectedLocation = document.getElementById('selectedLocation');
+                if (selectedLocation) selectedLocation.textContent = location.name;
+                
+                const locationDetails = document.getElementById('locationDetails');
+                if (locationDetails) {
+                  locationDetails.innerHTML = `
+                    <div class="location-detail">
+                      <i class="fas fa-info-circle"></i>
+                      <span>Category: ${location.category}</span>
+                    </div>
+                    <div class="location-detail">
+                      <i class="fas fa-map-pin"></i>
+                      <span>Coordinates: ${location.coordinates[1].toFixed(4)}, ${location.coordinates[0].toFixed(4)}</span>
+                    </div>
+                  `;
+                }
+              });
+            });
+          });
+          
+        } catch (error) {
+          console.error('Error initializing map:', error);
+          const mapLoading = document.getElementById('mapLoading');
+          if (mapLoading) {
+            mapLoading.innerHTML = '<p>Map could not be loaded. Please check your connection.</p>';
+          }
+        }
+      }
+      
+      // Toggle buttons for pricing
+      const monthlyBtn = document.querySelector('[data-billing="monthly"]');
+      const yearlyBtn = document.querySelector('[data-billing="yearly"]');
+      if (monthlyBtn && yearlyBtn) {
+        monthlyBtn.addEventListener('click', () => {
+          monthlyBtn.classList.add('active');
+          yearlyBtn.classList.remove('active');
+        });
+        
+        yearlyBtn.addEventListener('click', () => {
+          yearlyBtn.classList.add('active');
+          monthlyBtn.classList.remove('active');
+        });
+      }
+      
+      // Dark mode toggle with enhanced theme switching
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      if (darkModeToggle) {
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'enabled' || 
+            (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.body.classList.add('dark-mode');
+          darkModeToggle.checked = true;
+          
+          // Update map style if map exists
+          if (typeof mapInstance !== 'undefined' && mapInstance) {
+            try {
+              mapInstance.setStyle('mapbox://styles/mapbox/dark-v10');
+            } catch (err) {
+              console.warn('Unable to set map style:', err);
+            }
+          }
+        }
+        
+        // Add event listener
+        darkModeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+            
+            // Update map style if map exists
+            if (typeof mapInstance !== 'undefined' && mapInstance) {
+              try {
+                mapInstance.setStyle('mapbox://styles/mapbox/dark-v10');
+              } catch (err) {
+                console.warn('Unable to set map style:', err);
+              }
+            }
+          } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+            
+            // Update map style if map exists
+            if (typeof mapInstance !== 'undefined' && mapInstance) {
+              try {
+                mapInstance.setStyle('mapbox://styles/mapbox/light-v10');
+              } catch (err) {
+                console.warn('Unable to set map style:', err);
+              }
+            }
+          }
+        });
+      }
+      
+      // Mobile navbar toggle
+      const navbarToggle = document.querySelector('.navbar-toggle');
+      const navbarCollapse = document.querySelector('.navbar-collapse');
+      
+      if (navbarToggle && navbarCollapse) {
+        navbarToggle.addEventListener('click', function() {
+          navbarCollapse.classList.toggle('open');
+          const isExpanded = navbarCollapse.classList.contains('open');
+          navbarToggle.setAttribute('aria-expanded', isExpanded);
+        });
+        
+        // Close menu when clicking on a nav item
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            navbarCollapse.classList.remove('open');
+            navbarToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    /* Brand colors from style guide */
+    --accent-color: 114 48% 57%; /* #74C365 */
+    --accent-dark: 114 48% 47%; /* #5ba04f */
+    --accent-light: 114 48% 77%; /* #a3dC98 */
+    --accent-transparent: 114 48% 57% / 0.1;
+    
+    --secondary-accent: 7 76% 52%; /* #E23D28 */
+    --secondary-dark: 7 76% 42%; /* #b52e1f */
+    --secondary-light: 7 76% 67%; /* #ed7266 */
+    
+    --contrast-color: 45 89% 57%; /* #F4C431 */
+    --contrast-dark: 45 89% 47%; /* #dba718 */
+    --contrast-light: 45 89% 77%; /* #f9dc7e */
+
+    /* Neutral colors */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
+    --destructive: 7 76% 52%; /* #E23D28 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 114 48% 57%; /* #74C365 */
+    
+    /* Neutral palette */
+    --neutral-50: #f9fafb;
+    --neutral-100: #f3f4f6;
+    --neutral-200: #e5e7eb;
+    --neutral-300: #d1d5db;
+    --neutral-400: #9ca3af;
+    --neutral-500: #6b7280;
+    --neutral-600: #4b5563;
+    --neutral-700: #374151;
+    --neutral-800: #1f2937;
+    --neutral-900: #111827;
+    
+    /* Chart colors */
+    --chart-1: 114 48% 57%; /* #74C365 */
+    --chart-2: 7 76% 52%; /* #E23D28 */
+    --chart-3: 45 89% 57%; /* #F4C431 */
+    --chart-4: 220 8% 46%; /* #64748b */
+    --chart-5: 114 48% 47%; /* #5ba04f */
+    
+    /* Spacing system */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.75rem;
+    --spacing-xl: 2.5rem;
+    
+    /* Borders */
+    --border-radius: 10px;
+    --border-radius-sm: 6px;
+    --border-radius-lg: 16px;
+    --radius: 0.5rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "ss02";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Typography system based on style guide */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold leading-tight tracking-tight mt-lg mb-md;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+
+  p {
+    @apply mb-md leading-relaxed;
+  }
+}
+
+/* Improved focus states for accessibility */
+@layer utilities {
+  .focus-visible {
+    @apply outline-2 outline-primary outline-offset-2;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  :root {
+    --spacing-xl: 40px;
+    --spacing-lg: 24px;
+    --spacing-md: 12px;
+    --spacing-sm: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-xl: 32px;
+    --spacing-lg: 20px;
+    --spacing-md: 10px;
+    --spacing-sm: 5px;
+  }
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Add subtle animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
+
+
